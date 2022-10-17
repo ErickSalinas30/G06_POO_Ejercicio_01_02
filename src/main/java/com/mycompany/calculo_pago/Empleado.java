@@ -9,38 +9,50 @@ package com.mycompany.calculo_pago;
  * @author usuario
  */
 public class Empleado {
+       
     String nombre;
     int horasTrabajadas;
     double costoHora;
     int yearIngreso;
     
     
-    public int calcularYearTrabajado(int yearActual){
-        var retorno= 0;
-        retorno=yearActual-this.yearIngreso;
-        
-      
-        return retorno;      
+    public String mostrarInfo(){
+        var retorno="El empleado se llama : "+this.nombre+" el empleado trabajo estas horas: "+this.horasTrabajadas+" el costo por hora es:  "
+                +this.costoHora+" e ingreso en el año : "+this.yearIngreso;
+        return retorno;
     }
-    
-    public double calcularIngreso(int yearActual){
+    public Double calcularIngreso(int yearActual){
+        var antiguedad=0.0d;
         var retorno=0.0d;
-        var total=(this.costoHora*this.horasTrabajadas);
-        
-        
-        
-        return retorno;               
-                
+        var porcentaje=0.0d;
+        var horaExtra=0;
+        if (this.horasTrabajadas<=160){
+            porcentaje=(((yearActual)-this.yearIngreso)*2)/100;
+            antiguedad=(this.costoHora*this.horasTrabajadas*porcentaje);
+            retorno=(this.costoHora*this.horasTrabajadas)+antiguedad;
+            return retorno;
+        }else{
+            porcentaje=(((yearActual)-this.yearIngreso)*2)/100;
+            horaExtra=this.horasTrabajadas-160;
+            antiguedad=(this.costoHora*(this.horasTrabajadas-horaExtra)*porcentaje);
+            retorno=(this.costoHora*(this.horasTrabajadas-horaExtra))+antiguedad;
+            return retorno;
+        }
     }
      
     
     public double calcularBonoHoraExtra(){
         var retorno=0.0d;
         if(this.horasTrabajadas>160){
-            retorno=(this.costoHora*2);
+            var horaExtra=0;
+            horaExtra=(this.horasTrabajadas-160)*2;
+            retorno=this.costoHora*horaExtra;
+            return retorno;
+        }else{
+            retorno=0;
+            return retorno;
         }
-        
-        return retorno;
+       
     }
      
     /*
@@ -51,39 +63,26 @@ public class Empleado {
     */
     
     
-    public double calcularImpuesto(){
+    public double calcularImpuesto(int limite1,int limite2,int limite3)
+    {
         var retorno=0.0d;
         var resta=0.0d;
-        if(this.calcularIngreso(2022)<=3200 && this.calcularIngreso(2022)>0){
-            retorno=this.calcularIngreso(2022);
+        if(this.calcularIngreso(2022)<=limite1&&this.calcularIngreso(2022)>0){
+            retorno=0;
+        }else if(this.calcularIngreso(2022)>limite1&&this.calcularIngreso(2022)<=limite2){
+            retorno=this.calcularIngreso(2022)*0.05;
+        }else if(this.calcularIngreso(2022)>limite2&&this.calcularIngreso(2022)<=limite3){
+            retorno=this.calcularIngreso(2022)*0.12;
+        }else if(this.calcularIngreso(2022)>limite3){
+            retorno=this.calcularIngreso(2022)*0.25;
         }
-        if(this.calcularIngreso(2022)>3200 && this.calcularIngreso(2022)<=3800){
-            resta=this.calcularIngreso(2022)*0.05;
-            retorno=this.calcularIngreso(2022)-resta;
-            
-        }
-        if(this.calcularIngreso(2022)>3800 && this.calcularIngreso(2022)<=4400){
-            resta=this.calcularIngreso(2022)*0.12;
-            retorno=this.calcularIngreso(2022)-resta;
-            
-        }
-        if(this.calcularIngreso(2022)>4400){
-            resta=this.calcularIngreso(2022)*0.25;
-            retorno=this.calcularIngreso(2022)-resta;
-            
-        }
-        
         return retorno;
-        
-        
     }
     
-    public double calcularTotal(){
+    public double calcularTotal(int yearActual,int limite1,int limite2,int limite3 ){
         var retorno= 0.0d;
-        
-        
-        return retorno;
-                
+        retorno=this.calcularIngreso(2022)+this.calcularBonoHoraExtra()-this.calcularImpuesto(1000, 2000, 3000);
+        return retorno;         
     }
     
     
