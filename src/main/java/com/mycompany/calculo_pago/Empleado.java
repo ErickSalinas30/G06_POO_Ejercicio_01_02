@@ -81,7 +81,7 @@ public class Empleado {
     
     public double calcularTotal(int yearActual,int limite1,int limite2,int limite3 ){
         var retorno= 0.0d;
-        retorno=this.calcularIngreso(2022)+this.calcularBonoHoraExtra()-this.calcularImpuesto(1000, 2000, 3000);
+        retorno=this.calcularIngreso(yearActual)+this.calcularBonoHoraExtra()-this.calcularImpuesto(limite1, limite2, limite3);
         return retorno;         
     }
     
